@@ -4,19 +4,19 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Рыжик</title>
-<meta name="description" content="Фотографии, две глупости и один салют — для Марины.">
-<meta name="theme-color" content="#f3ebdf">
+<meta name="description" content="Фотографии, две глупости и звёздный дождь — для Марины.">
+<meta name="theme-color" content="#05060c">
 <style>
   *, *::before, *::after { box-sizing: border-box; }
 
   :root {
-    --paper: #f3ebdf;
-    --paper-2: #fbf5ea;
-    --ink: #231c16;
-    --muted: #6d5d4f;
-    --accent: #b3533a;
-    --accent-soft: rgba(179, 83, 58, 0.26);
-    --night: #15171e;
+    --space: #05060c;
+    --space-2: #0a0d18;
+    --ink: #eef2ff;
+    --muted: #9aa4c4;
+    --accent: #8ab4ff;
+    --accent-2: #c9a0ff;
+    --accent-soft: rgba(138, 180, 255, 0.28);
     --serif: Georgia, "Times New Roman", serif;
     --sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   }
@@ -26,8 +26,10 @@
   body {
     margin: 0;
     background:
-      radial-gradient(1000px 700px at 50% -12%, #fdf7ee 0%, rgba(253, 247, 238, 0) 62%),
-      var(--paper);
+      radial-gradient(1100px 800px at 12% 0%, rgba(74, 92, 190, 0.22), transparent 60%),
+      radial-gradient(900px 700px at 88% 22%, rgba(126, 70, 180, 0.18), transparent 62%),
+      radial-gradient(800px 600px at 50% 112%, rgba(46, 120, 190, 0.14), transparent 68%),
+      var(--space);
     background-attachment: fixed;
     color: var(--ink);
     font-family: var(--sans);
@@ -35,12 +37,37 @@
     overflow-x: hidden;
   }
 
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background-image:
+      radial-gradient(1px 1px at 12px 24px, #ffffff, transparent),
+      radial-gradient(1px 1px at 84px 148px, #cfe0ff, transparent),
+      radial-gradient(1.5px 1.5px at 162px 58px, #ffffff, transparent),
+      radial-gradient(1px 1px at 224px 206px, #b9ccff, transparent),
+      radial-gradient(1px 1px at 302px 122px, #ffffff, transparent),
+      radial-gradient(2px 2px at 258px 266px, #ffffff, transparent),
+      radial-gradient(1px 1px at 42px 304px, #d8e4ff, transparent),
+      radial-gradient(1px 1px at 186px 330px, #ffffff, transparent);
+    background-size: 360px 360px;
+    opacity: 0.55;
+    animation: twinkle 9s ease-in-out infinite alternate;
+  }
+
+  @keyframes twinkle {
+    from { opacity: 0.4; }
+    to { opacity: 0.72; }
+  }
+
   .progress {
     position: fixed;
     inset: 0 auto auto 0;
     width: 100%;
     height: 2px;
-    background: linear-gradient(90deg, rgba(179, 83, 58, 0.2), var(--accent));
+    background: linear-gradient(90deg, rgba(138, 180, 255, 0.15), var(--accent), var(--accent-2));
     transform: scaleX(0);
     transform-origin: 0 50%;
     z-index: 30;
@@ -51,9 +78,9 @@
     inset: 0;
     z-index: 20;
     pointer-events: none;
-    opacity: 0.05;
-    mix-blend-mode: multiply;
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/></filter><rect width='180' height='180' filter='url(%23n)' opacity='0.6'/></svg>");
+    opacity: 0.06;
+    mix-blend-mode: screen;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/></filter><rect width='180' height='180' filter='url(%23n)' opacity='0.4'/></svg>");
   }
 
   .light {
@@ -61,7 +88,7 @@
     inset: 0;
     z-index: 1;
     pointer-events: none;
-    background: radial-gradient(560px 560px at var(--mx, 50%) var(--my, 24%), rgba(179, 83, 58, 0.07), transparent 70%);
+    background: radial-gradient(620px 620px at var(--mx, 50%) var(--my, 24%), rgba(138, 180, 255, 0.10), transparent 70%);
   }
 
   #fw {
@@ -73,12 +100,13 @@
     z-index: 15;
     pointer-events: none;
     opacity: 0;
-    transition: opacity 0.7s ease;
+    transition: opacity 0.6s ease;
   }
 
   #fw.on { opacity: 1; }
 
   main { position: relative; z-index: 2; }
+  section.night { position: relative; z-index: 2; }
 
   .hero {
     min-height: 100vh;
@@ -89,7 +117,34 @@
     text-align: center;
     padding: 96px 24px 110px;
     position: relative;
+    overflow: hidden;
   }
+
+  .hero::before {
+    content: "";
+    position: absolute;
+    inset: -10% -20%;
+    background: radial-gradient(closest-side, rgba(120, 150, 255, 0.16), transparent 70%);
+    pointer-events: none;
+  }
+
+  .orbit {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .orbit i {
+    position: absolute;
+    border: 1px solid rgba(138, 180, 255, 0.10);
+    border-radius: 50%;
+  }
+
+  .orbit i:nth-child(1) { width: 62vmin; height: 62vmin; }
+  .orbit i:nth-child(2) { width: 82vmin; height: 82vmin; border-color: rgba(201, 160, 255, 0.07); }
 
   .kicker {
     margin: 0 0 22px;
@@ -106,7 +161,8 @@
     font-size: clamp(58px, 12.5vw, 170px);
     line-height: 0.95;
     letter-spacing: -0.015em;
-    color: var(--ink);
+    color: #f4f7ff;
+    text-shadow: 0 0 70px rgba(138, 180, 255, 0.35);
   }
 
   .hero h1::after {
@@ -138,7 +194,7 @@
     font-size: 9px;
     letter-spacing: 0.34em;
     text-transform: uppercase;
-    color: rgba(35, 28, 22, 0.4);
+    color: rgba(238, 242, 255, 0.4);
   }
 
   .cue i {
@@ -171,7 +227,7 @@
     width: min(220px, 55vw);
     height: 1px;
     margin: 0 auto;
-    background: linear-gradient(90deg, transparent, rgba(35, 28, 22, 0.22), transparent);
+    background: linear-gradient(90deg, transparent, rgba(138, 180, 255, 0.35), transparent);
     border: 0;
   }
 
@@ -193,10 +249,7 @@
 
   .statement:last-child { margin-bottom: 0; }
 
-  .statement em {
-    font-style: italic;
-    color: var(--accent);
-  }
+  .statement em { font-style: italic; color: var(--accent); }
 
   .statements .statement:nth-child(2) { margin-left: auto; max-width: 17ch; text-align: right; }
   .statements .statement:nth-child(3) { max-width: 19ch; }
@@ -215,7 +268,7 @@
     top: 8px;
     bottom: 8px;
     width: 1px;
-    background: linear-gradient(to bottom, transparent, var(--accent-soft) 20%, var(--accent-soft) 80%, transparent);
+    background: linear-gradient(to bottom, transparent, var(--accent-soft) 20%, rgba(201, 160, 255, 0.24) 80%, transparent);
     display: none;
   }
 
@@ -223,7 +276,7 @@
     margin: 0 0 1.5em;
     font-size: clamp(16px, 1.5vw, 19px);
     line-height: 1.85;
-    color: rgba(35, 28, 22, 0.86);
+    color: rgba(238, 242, 255, 0.84);
     text-wrap: pretty;
   }
 
@@ -231,7 +284,7 @@
     font-family: var(--serif);
     font-size: clamp(26px, 3.4vw, 40px);
     line-height: 1.28;
-    color: var(--ink);
+    color: #f4f7ff;
     margin-bottom: 1.05em;
   }
 
@@ -287,19 +340,19 @@
     width: 100%;
     aspect-ratio: 4 / 5;
     padding: 0;
-    border: 1px solid rgba(35, 28, 22, 0.16);
-    border-radius: 12px;
-    background: linear-gradient(168deg, #fdf8ef, #eaddc9 72%);
+    border: 1px solid rgba(138, 180, 255, 0.24);
+    border-radius: 14px;
+    background: linear-gradient(168deg, #141b30, #090d18 74%);
     overflow: hidden;
     cursor: pointer;
     perspective: 900px;
-    box-shadow: 0 18px 44px -30px rgba(35, 28, 22, 0.55);
+    box-shadow: 0 20px 50px -34px rgba(0, 0, 0, 0.9);
     transition: border-color 0.4s ease, box-shadow 0.4s ease, transform 0.4s ease;
   }
 
   .env:hover {
-    border-color: var(--accent-soft);
-    box-shadow: 0 24px 50px -28px rgba(35, 28, 22, 0.6);
+    border-color: rgba(138, 180, 255, 0.55);
+    box-shadow: 0 26px 60px -30px rgba(90, 130, 255, 0.45);
     transform: translateY(-2px);
   }
 
@@ -311,25 +364,27 @@
     width: 100%;
     height: 100%;
     object-fit: contain;
-    background: #1c1712;
+    background: #05060c;
     opacity: 0;
-    transition: opacity 0.35s ease;
+    transform: scale(1.06);
+    filter: blur(6px);
+    transition: opacity 0.45s ease, transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1), filter 0.5s ease;
   }
 
   .env__flap {
     position: absolute;
     inset: 0;
     pointer-events: none;
-    transition: opacity 0.3s ease;
+    transition: opacity 0.28s ease;
   }
 
   .env__flap--top {
-    background: linear-gradient(180deg, #fffaf1, #f1e5d4 74%);
+    background: linear-gradient(180deg, #1b2440, #101728 74%);
     clip-path: polygon(0 0, 100% 0, 50% 58%);
   }
 
   .env__flap--bottom {
-    background: linear-gradient(0deg, #fffaf1, #efe2cf 74%);
+    background: linear-gradient(0deg, #1b2440, #0e1424 74%);
     clip-path: polygon(0 100%, 100% 100%, 50% 42%);
   }
 
@@ -341,13 +396,13 @@
     height: 54px;
     margin: -27px 0 0 -27px;
     border-radius: 50%;
-    background: radial-gradient(circle at 34% 28%, #c96447, #9c462f);
-    color: #fdf3e4;
+    background: radial-gradient(circle at 34% 28%, #7d95ff, #38409c);
+    color: #eef2ff;
     font-family: var(--serif);
     font-size: 23px;
     display: grid;
     place-items: center;
-    box-shadow: 0 6px 16px -8px rgba(35, 28, 22, 0.6);
+    box-shadow: 0 0 22px rgba(110, 140, 255, 0.45);
     transition: opacity 0.3s ease;
   }
 
@@ -360,12 +415,13 @@
     font-size: 9px;
     letter-spacing: 0.32em;
     text-transform: uppercase;
-    color: rgba(35, 28, 22, 0.42);
+    color: rgba(238, 242, 255, 0.45);
     transition: opacity 0.3s ease;
   }
 
+  .env-card.open .env { border-color: rgba(138, 180, 255, 0.5); box-shadow: 0 30px 70px -34px rgba(90, 130, 255, 0.55); }
   .env-card.open .env__flap { display: none; }
-  .env-card.open .env__photo { opacity: 1 !important; }
+  .env-card.open .env__photo { opacity: 1 !important; transform: none; filter: none; }
   .env-card.open .env__seal,
   .env-card.open .env__hint { opacity: 0; }
 
@@ -390,7 +446,7 @@
     max-width: 940px;
     margin: clamp(50px, 8vh, 80px) auto 0;
     padding-top: clamp(34px, 5vh, 54px);
-    border-top: 1px solid rgba(35, 28, 22, 0.14);
+    border-top: 1px solid rgba(138, 180, 255, 0.14);
   }
 
   .memes h3 {
@@ -419,9 +475,9 @@
     width: 100%;
     height: auto;
     padding: 10px;
-    background: #fffaf1;
-    border: 1px solid rgba(35, 28, 22, 0.12);
-    border-radius: 10px;
+    background: #0c1120;
+    border: 1px solid rgba(138, 180, 255, 0.18);
+    border-radius: 12px;
   }
 
   .meme figcaption {
@@ -435,15 +491,14 @@
 
   .night {
     background:
-      radial-gradient(900px 600px at 50% 20%, #262a35 0%, rgba(38, 42, 53, 0) 60%),
-      var(--night);
-    color: #f4eee3;
+      radial-gradient(900px 620px at 50% 12%, rgba(96, 84, 200, 0.34), transparent 62%),
+      radial-gradient(700px 520px at 16% 88%, rgba(40, 118, 190, 0.22), transparent 66%),
+      #070912;
     min-height: 100vh;
     min-height: 100svh;
     display: grid;
     place-items: center;
     padding: clamp(80px, 12vh, 140px) 24px;
-    position: relative;
   }
 
   .finale {
@@ -452,7 +507,7 @@
     margin: 0 auto;
   }
 
-  .finale .kicker { color: rgba(244, 238, 227, 0.5); }
+  .finale .kicker { color: rgba(238, 242, 255, 0.5); }
 
   .finale h2 {
     margin: 0 0 34px;
@@ -469,25 +524,26 @@
     display: inline-flex;
     align-items: center;
     padding: 18px 38px;
-    border: 1px solid rgba(224, 181, 138, 0.45);
+    border: 1px solid rgba(138, 180, 255, 0.5);
     border-radius: 999px;
-    background: rgba(224, 181, 138, 0.06);
-    color: #f4eee3;
+    background: rgba(138, 180, 255, 0.08);
+    color: #f4f7ff;
     font-family: var(--sans);
     font-size: 11px;
     letter-spacing: 0.3em;
     text-transform: uppercase;
     cursor: pointer;
-    transition: background 0.4s ease, border-color 0.4s ease, letter-spacing 0.4s ease;
+    transition: background 0.4s ease, border-color 0.4s ease, letter-spacing 0.4s ease, box-shadow 0.4s ease;
   }
 
   .btn:hover {
-    background: rgba(224, 181, 138, 0.16);
-    border-color: #e0b58a;
+    background: rgba(138, 180, 255, 0.16);
+    border-color: #a8c6ff;
     letter-spacing: 0.36em;
+    box-shadow: 0 0 40px -10px rgba(120, 160, 255, 0.6);
   }
 
-  .btn:focus-visible { outline: 2px solid #e0b58a; outline-offset: 5px; }
+  .btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 5px; }
 
   .card {
     max-height: 0;
@@ -519,23 +575,61 @@
     text-wrap: balance;
   }
 
-  .card-inner .big span { color: #e0b58a; font-style: italic; }
+  .card-inner .big span { color: var(--accent); font-style: italic; }
 
   .card-inner .small {
     margin: 0;
     font-size: clamp(14px, 1.4vw, 16px);
     line-height: 1.8;
-    color: rgba(244, 238, 227, 0.62);
+    color: rgba(238, 242, 255, 0.6);
   }
 
+  .sound {
+    position: fixed;
+    right: 18px;
+    bottom: 18px;
+    z-index: 25;
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    padding: 10px 14px;
+    border: 1px solid rgba(138, 180, 255, 0.28);
+    border-radius: 999px;
+    background: rgba(8, 12, 24, 0.72);
+    backdrop-filter: blur(8px);
+    color: var(--muted);
+    font-family: var(--sans);
+    font-size: 9px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: color 0.3s ease, border-color 0.3s ease;
+  }
+
+  .sound:hover { color: var(--ink); border-color: rgba(138, 180, 255, 0.55); }
+  .sound:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+  .sound__dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: rgba(138, 180, 255, 0.35);
+    transition: background 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .sound.on { color: var(--ink); border-color: rgba(138, 180, 255, 0.6); }
+  .sound.on .sound__dot { background: #a8c6ff; box-shadow: 0 0 12px #8ab4ff; }
+
   footer {
-    background: var(--night);
+    position: relative;
+    z-index: 2;
+    background: #070912;
     padding: 0 24px 56px;
     text-align: center;
     font-size: 10px;
     letter-spacing: 0.3em;
     text-transform: uppercase;
-    color: rgba(244, 238, 227, 0.28);
+    color: rgba(238, 242, 255, 0.28);
   }
 
   .reveal {
@@ -565,12 +659,14 @@
 <div class="light" id="light"></div>
 <canvas id="fw" aria-hidden="true"></canvas>
 <div class="grain"></div>
+<button class="sound" id="sound" type="button" aria-pressed="false">музыка<span class="sound__dot" aria-hidden="true"></span></button>
 
 <main>
   <header class="hero">
-    <p class="kicker enter d1">Марина · без повода</p>
+    <div class="orbit" aria-hidden="true"><i></i><i></i></div>
+    <p class="kicker enter d1">Марина · где-то рядом</p>
     <h1 class="enter d2">Рыжик</h1>
-    <p class="sub enter d3">Фотографии, две глупости и один фейерверк. Только для тебя.</p>
+    <p class="sub enter d3">Фотографии, две глупости и звёздный дождь. Только для тебя.</p>
     <div class="cue enter d4" aria-hidden="true"><i></i>листай</div>
   </header>
 
@@ -610,7 +706,7 @@
     <div class="vault-head reveal">
       <p class="kicker">письма без марок</p>
       <h2>Четыре конверта. В каждом — ты.</h2>
-      <p>Нажми на клапан: внутри фотография и подпись, которую я не стал писать в чат.</p>
+      <p>Нажми на клапан: внутри фотография, подпись и немного звёздной пыли.</p>
     </div>
 
     <div class="envelopes">
@@ -679,9 +775,9 @@
 <section class="night">
   <div class="finale" id="finale">
     <p class="kicker reveal">и последнее</p>
-    <h2 class="reveal">Самое громкое я оставил на конец.</h2>
+    <h2 class="reveal">Осталось только зажечь звёзды.</h2>
 
-    <button class="btn" id="open" type="button" aria-expanded="false" aria-controls="surprise">Зажечь</button>
+    <button class="btn" id="open" type="button" aria-expanded="false" aria-controls="surprise">Зажечь звёзды</button>
 
     <div class="card" id="surprise" aria-hidden="true">
       <div class="card-inner">
@@ -724,34 +820,10 @@
     document.querySelectorAll(".reveal").forEach(function (el) { el.classList.add("in"); });
   }
 
-  document.querySelectorAll(".env").forEach(function (btn) {
-    btn.addEventListener("click", function () {
-      var card = btn.closest(".env-card");
-      var isOpen = card.classList.toggle("open");
-      btn.setAttribute("aria-expanded", isOpen ? "true" : "false");
-      var text = document.getElementById(btn.getAttribute("aria-controls"));
-      if (text) text.setAttribute("aria-hidden", isOpen ? "false" : "true");
-    });
-  });
-
-  var finale = document.getElementById("finale");
-  var openBtn = document.getElementById("open");
-  var card = document.getElementById("surprise");
-
-  openBtn.addEventListener("click", function () {
-    finale.classList.add("open");
-    openBtn.setAttribute("aria-expanded", "true");
-    card.setAttribute("aria-hidden", "false");
-    startShow();
-    window.setTimeout(function () {
-      card.scrollIntoView({ behavior: "smooth", block: "center" });
-    }, 320);
-  });
-
   var canvas = document.getElementById("fw");
   var ctx = canvas.getContext("2d");
   var W = 0, H = 0, dpr = Math.min(window.devicePixelRatio || 1, 2);
-  var COLORS = ["#e0b58a", "#f6d7ae", "#ff9a5c", "#fff4dd"];
+  var COLORS = ["#cfd9ff", "#8ab4ff", "#c9a0ff", "#fff4dd"];
   var parts = [], rockets = [], flashes = [], running = false, last = 0;
 
   function resize() {
@@ -796,6 +868,29 @@
     }
   }
 
+  function sparkle(x, y) {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (!running) {
+      running = true;
+      last = 0;
+      canvas.classList.add("on");
+      requestAnimationFrame(tick);
+    }
+    flashes.push({ x: x, y: y, t: 0, r: rand(18, 26), color: COLORS[0] });
+    for (var i = 0; i < 46; i++) {
+      var a = Math.random() * Math.PI * 2;
+      var s = Math.random() * 3 + 0.8;
+      parts.push({
+        x: x, y: y,
+        vx: Math.cos(a) * s,
+        vy: Math.sin(a) * s - 0.6,
+        life: 1,
+        decay: rand(0.014, 0.024),
+        color: COLORS[Math.floor(Math.random() * COLORS.length)]
+      });
+    }
+  }
+
   function tick(t) {
     if (!running) return;
     if (!last) last = t;
@@ -827,7 +922,7 @@
       ctx.beginPath();
       ctx.moveTo(r.x, r.y);
       ctx.lineTo(r.x - r.vx * 2, r.y - r.vy * 2);
-      ctx.strokeStyle = "rgba(255,232,190,0.9)";
+      ctx.strokeStyle = "rgba(220,232,255,0.9)";
       ctx.lineWidth = 2;
       ctx.stroke();
       if (r.y <= r.target || r.vy >= -1.2) {
@@ -889,6 +984,83 @@
     })();
     requestAnimationFrame(tick);
   }
+
+  document.querySelectorAll(".env").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var card = btn.closest(".env-card");
+      var isOpen = card.classList.toggle("open");
+      btn.setAttribute("aria-expanded", isOpen ? "true" : "false");
+      var text = document.getElementById(btn.getAttribute("aria-controls"));
+      if (text) text.setAttribute("aria-hidden", isOpen ? "false" : "true");
+      if (isOpen) {
+        var box = btn.getBoundingClientRect();
+        sparkle(box.left + box.width / 2, box.top + box.height * 0.42);
+      }
+    });
+  });
+
+  var finale = document.getElementById("finale");
+  var openBtn = document.getElementById("open");
+  var card = document.getElementById("surprise");
+
+  openBtn.addEventListener("click", function () {
+    finale.classList.add("open");
+    openBtn.setAttribute("aria-expanded", "true");
+    card.setAttribute("aria-hidden", "false");
+    startShow();
+    window.setTimeout(function () {
+      card.scrollIntoView({ behavior: "smooth", block: "center" });
+    }, 320);
+  });
+
+  var soundBtn = document.getElementById("sound");
+  var actx = null, pad = null, audioOn = false;
+
+  function buildAudio() {
+    var AC = window.AudioContext || window.webkitAudioContext;
+    actx = new AC();
+    pad = actx.createGain();
+    pad.gain.value = 0;
+    pad.connect(actx.destination);
+
+    var filter = actx.createBiquadFilter();
+    filter.type = "lowpass";
+    filter.frequency.value = 820;
+    filter.Q.value = 0.7;
+    filter.connect(pad);
+
+    var freqs = [110, 164.81, 220, 277.18, 329.63];
+    freqs.forEach(function (freq, i) {
+      var osc = actx.createOscillator();
+      osc.type = i % 2 ? "sine" : "triangle";
+      osc.frequency.value = freq;
+      osc.detune.value = (i - 2) * 5;
+      var g = actx.createGain();
+      g.gain.value = 0.055 / (i + 1);
+      osc.connect(g);
+      g.connect(filter);
+      osc.start();
+    });
+
+    var lfo = actx.createOscillator();
+    lfo.frequency.value = 0.07;
+    var lfoGain = actx.createGain();
+    lfoGain.gain.value = 240;
+    lfo.connect(lfoGain);
+    lfoGain.connect(filter.frequency);
+    lfo.start();
+  }
+
+  soundBtn.addEventListener("click", function () {
+    if (!actx) buildAudio();
+    if (actx.state === "suspended") actx.resume();
+    audioOn = !audioOn;
+    pad.gain.cancelScheduledValues(actx.currentTime);
+    pad.gain.setValueAtTime(pad.gain.value, actx.currentTime);
+    pad.gain.linearRampToValueAtTime(audioOn ? 0.55 : 0, actx.currentTime + (audioOn ? 2.5 : 0.8));
+    soundBtn.classList.toggle("on", audioOn);
+    soundBtn.setAttribute("aria-pressed", audioOn ? "true" : "false");
+  });
 </script>
 </body>
 </html>
