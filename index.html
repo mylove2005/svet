@@ -706,6 +706,192 @@
 
   .reveal.in { opacity: 1; transform: none; }
 
+  .planet {
+    position: absolute;
+    left: 50%;
+    bottom: -54vmin;
+    width: 92vmin;
+    height: 92vmin;
+    margin-left: -46vmin;
+    border-radius: 50%;
+    background: radial-gradient(circle at 34% 26%, #2b3559 0%, #141b31 46%, #080b14 72%);
+    box-shadow: inset -26px -20px 90px rgba(0, 0, 0, 0.78), 0 0 150px rgba(90, 120, 255, 0.16);
+    pointer-events: none;
+    z-index: 0;
+    will-change: transform;
+  }
+
+  .planet::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 148%;
+    height: 148%;
+    margin: -74% 0 0 -74%;
+    border-radius: 50%;
+    border: 1px solid rgba(138, 180, 255, 0.16);
+    transform: rotate(-18deg) scaleY(0.22);
+  }
+
+  .const-head {
+    max-width: 640px;
+    margin: 0 auto clamp(28px, 5vh, 44px);
+    text-align: center;
+  }
+
+  .const-head h2 {
+    margin: 14px 0 10px;
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(26px, 3.8vw, 42px);
+    line-height: 1.2;
+    text-wrap: balance;
+  }
+
+  .const-head p:last-child {
+    margin: 0;
+    font-size: clamp(14px, 1.4vw, 16px);
+    color: var(--muted);
+  }
+
+  .const { max-width: 760px; margin: 0 auto; text-align: center; }
+
+  .const__row {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 520px;
+    margin: 0 auto;
+  }
+
+  .const__row::before {
+    content: "";
+    position: absolute;
+    left: 8%;
+    right: 8%;
+    top: 50%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(138, 180, 255, 0.35), transparent);
+    transform: translateY(-50%);
+  }
+
+  .star {
+    appearance: none;
+    position: relative;
+    z-index: 1;
+    width: 56px;
+    height: 56px;
+    padding: 0;
+    display: grid;
+    place-items: center;
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+  }
+
+  .star__shape {
+    width: 26px;
+    height: 26px;
+    background: #cfd9ff;
+    clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+    opacity: 0.28;
+    filter: drop-shadow(0 0 6px rgba(138, 180, 255, 0.2));
+    transition: opacity 0.35s ease, transform 0.35s ease, filter 0.35s ease;
+  }
+
+  .star:hover .star__shape { opacity: 0.6; }
+  .star:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 50%; }
+
+  .star.lit .star__shape {
+    opacity: 1;
+    transform: scale(1.15);
+    filter: drop-shadow(0 0 14px rgba(138, 180, 255, 0.9));
+  }
+
+  .const__text {
+    min-height: 3.4em;
+    margin: 26px auto 0;
+    max-width: 44ch;
+    font-family: var(--serif);
+    font-size: clamp(17px, 2vw, 22px);
+    line-height: 1.55;
+    color: #dfe7ff;
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+  }
+
+  .const__text.show { opacity: 1; transform: none; }
+
+  .const__done {
+    margin: 18px auto 0;
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: rgba(138, 180, 255, 0.85);
+    opacity: 0;
+    transition: opacity 0.6s ease;
+  }
+
+  .const__done.show { opacity: 1; }
+
+  .quote {
+    max-width: 760px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .quote blockquote {
+    margin: 0;
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: clamp(24px, 3.4vw, 40px);
+    line-height: 1.35;
+    text-wrap: balance;
+  }
+
+  .quote cite {
+    display: block;
+    margin-top: 20px;
+    font-style: normal;
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .quote .after {
+    margin: 30px 0 0;
+    font-size: clamp(14px, 1.4vw, 16px);
+    color: var(--muted);
+  }
+
+  .btn.ready {
+    border-color: rgba(168, 198, 255, 0.8);
+    box-shadow: 0 0 46px -8px rgba(138, 180, 255, 0.65);
+  }
+
+  .save {
+    margin-top: 26px;
+    appearance: none;
+    background: transparent;
+    border: 0;
+    border-bottom: 1px solid rgba(138, 180, 255, 0.3);
+    padding: 8px 4px;
+    color: rgba(238, 242, 255, 0.55);
+    font-family: var(--sans);
+    font-size: 10px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: color 0.3s ease, border-color 0.3s ease;
+  }
+
+  .save:hover { color: var(--ink); border-color: rgba(138, 180, 255, 0.7); }
+  .save:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+
   @media (min-width: 760px) {
     .envelopes { grid-template-columns: 1fr 1fr; }
     .meme-grid { grid-template-columns: 1fr 1fr; }
@@ -731,6 +917,7 @@
 <main>
   <header class="hero">
     <div class="orbit" aria-hidden="true"><i></i><i></i></div>
+    <div class="planet" aria-hidden="true"></div>
     <p class="kicker enter d1">Марина · где-то рядом</p>
     <h1 class="enter d2">Рыжик</h1>
     <p class="sub enter d3">Фотографии, две глупости и звёздный дождь. Только для тебя.</p>
@@ -745,6 +932,27 @@
       <p class="statement reveal">Это не открытка и не сообщение в мессенджере.</p>
       <p class="statement reveal">Это чуть больше, чем нужно.</p>
       <p class="statement reveal">И ровно столько, <em>сколько хочется</em>.</p>
+    </div>
+  </section>
+
+  <hr class="rule">
+
+  <section class="plain">
+    <div class="const-head reveal">
+      <p class="kicker">пять звёзд</p>
+      <h2>Собери своё созвездие</h2>
+      <p>Нажми на каждую — внутри по одной причине. Пятая объясняет всё остальное.</p>
+    </div>
+    <div class="const reveal">
+      <div class="const__row" role="group" aria-label="Пять звёзд">
+        <button class="star" type="button" aria-label="Звезда 1" aria-pressed="false" data-text="За то, что с тобой можно молчать и это не неловко."><span class="star__shape" aria-hidden="true"></span></button>
+        <button class="star" type="button" aria-label="Звезда 2" aria-pressed="false" data-text="За то, что ты появляешься ровно тогда, когда нужно."><span class="star__shape" aria-hidden="true"></span></button>
+        <button class="star" type="button" aria-label="Звезда 3" aria-pressed="false" data-text="За смех, который слышно из другой комнаты."><span class="star__shape" aria-hidden="true"></span></button>
+        <button class="star" type="button" aria-label="Звезда 4" aria-pressed="false" data-text="За честность, даже когда её не просили."><span class="star__shape" aria-hidden="true"></span></button>
+        <button class="star" type="button" aria-label="Звезда 5" aria-pressed="false" data-text="За то, что ты есть. Без повода."><span class="star__shape" aria-hidden="true"></span></button>
+      </div>
+      <p class="const__text" id="constText" aria-live="polite"></p>
+      <p class="const__done" id="constDone">Созвездие собрано. Теперь можно зажигать звёзды.</p>
     </div>
   </section>
 
@@ -838,6 +1046,15 @@
       </div>
     </div>
   </section>
+  <hr class="rule">
+
+  <section class="plain">
+    <div class="quote reveal">
+      <blockquote>«Друг — это одна душа, живущая в двух телах».</blockquote>
+      <cite>Аристотель</cite>
+      <p class="after">Проверено на нас. Работает.</p>
+    </div>
+  </section>
 </main>
 
 <section class="night">
@@ -851,6 +1068,7 @@
       <div class="card-inner">
         <p class="big">Рыжик, ты — свет.<br><span>И сейчас это будет видно.</span></p>
         <p class="small">Спасибо, что ты есть. Остальное скажу без сайта.</p>
+        <button class="save" id="save" type="button">сохранить открытку</button>
       </div>
     </div>
   </div>
@@ -880,6 +1098,15 @@
     root.style.setProperty("--sx", (nx * 9).toFixed(2) + "px");
     root.style.setProperty("--sy", (ny * 9).toFixed(2) + "px");
   }, { passive: true });
+
+  var planet = document.querySelector(".planet");
+  if (planet && !reduceMotion) {
+    var movePlanet = function () {
+      planet.style.transform = "translateY(" + Math.min(window.scrollY * 0.18, 150) + "px)";
+    };
+    window.addEventListener("scroll", movePlanet, { passive: true });
+    movePlanet();
+  }
 
   if ("IntersectionObserver" in window) {
     var io = new IntersectionObserver(function (entries) {
@@ -1088,6 +1315,7 @@
       if (isOpen) {
         var box = btn.getBoundingClientRect();
         sparkle(box.left + box.width / 2, box.top + box.height * 0.42);
+        chime();
       }
     });
   });
@@ -1106,12 +1334,61 @@
     }, 320);
   });
 
+  var starBtns = document.querySelectorAll(".star");
+  var constText = document.getElementById("constText");
+  var constDone = document.getElementById("constDone");
+  var litStars = 0;
+
+  starBtns.forEach(function (star) {
+    star.addEventListener("click", function () {
+      if (!star.classList.contains("lit")) {
+        star.classList.add("lit");
+        litStars++;
+      }
+      star.setAttribute("aria-pressed", "true");
+      constText.textContent = star.getAttribute("data-text");
+      constText.classList.add("show");
+      if (litStars === starBtns.length) {
+        constDone.classList.add("show");
+        openBtn.classList.add("ready");
+      }
+    });
+  });
+
   var soundBtn = document.getElementById("sound");
   var actx = null, pad = null, audioOn = false;
 
+  function ensureCtx() {
+    if (!actx) {
+      var AC = window.AudioContext || window.webkitAudioContext;
+      if (!AC) return null;
+      actx = new AC();
+    }
+    if (actx.state === "suspended") actx.resume();
+    return actx;
+  }
+
+  function chime() {
+    var a = ensureCtx();
+    if (!a) return;
+    var t = a.currentTime;
+    [880, 1318.5].forEach(function (freq, i) {
+      var osc = a.createOscillator();
+      var gain = a.createGain();
+      osc.type = "sine";
+      osc.frequency.value = freq;
+      gain.gain.setValueAtTime(0, t);
+      gain.gain.linearRampToValueAtTime(0.07 / (i + 1), t + 0.012);
+      gain.gain.exponentialRampToValueAtTime(0.0001, t + 1.1);
+      osc.connect(gain);
+      gain.connect(a.destination);
+      osc.start(t);
+      osc.stop(t + 1.2);
+    });
+  }
+
   function buildAudio() {
-    var AC = window.AudioContext || window.webkitAudioContext;
-    actx = new AC();
+    ensureCtx();
     pad = actx.createGain();
     pad.gain.value = 0;
     pad.connect(actx.destination);
@@ -1153,6 +1430,78 @@
     pad.gain.linearRampToValueAtTime(audioOn ? 0.55 : 0, actx.currentTime + (audioOn ? 2.5 : 0.8));
     soundBtn.classList.toggle("on", audioOn);
     soundBtn.setAttribute("aria-pressed", audioOn ? "true" : "false");
+  });
+
+  var saveBtn = document.getElementById("save");
+  saveBtn.addEventListener("click", function () {
+    var photo = document.querySelector(".env__photo");
+    if (!photo || !photo.naturalWidth) return;
+
+    var CW = 1080, CH = 1350;
+    var c = document.createElement("canvas");
+    c.width = CW;
+    c.height = CH;
+    var x = c.getContext("2d");
+
+    var bg = x.createLinearGradient(0, 0, 0, CH);
+    bg.addColorStop(0, "#0b1022");
+    bg.addColorStop(1, "#05060c");
+    x.fillStyle = bg;
+    x.fillRect(0, 0, CW, CH);
+
+    var glow = x.createRadialGradient(CW / 2, 220, 0, CW / 2, 220, 480);
+    glow.addColorStop(0, "rgba(90,120,230,0.35)");
+    glow.addColorStop(1, "rgba(90,120,230,0)");
+    x.fillStyle = glow;
+    x.fillRect(0, 0, CW, CH);
+
+    for (var i = 0; i < 170; i++) {
+      x.globalAlpha = Math.random() * 0.7 + 0.2;
+      x.fillStyle = "#ffffff";
+      x.beginPath();
+      x.arc(Math.random() * CW, Math.random() * CH, Math.random() * 1.6 + 0.4, 0, Math.PI * 2);
+      x.fill();
+    }
+    x.globalAlpha = 1;
+
+    x.textAlign = "center";
+    x.fillStyle = "#eef2ff";
+    x.font = "76px Georgia, serif";
+    x.fillText("Рыжик", CW / 2, 150);
+
+    var pw = 640, ph = 854, px = (CW - pw) / 2, py = 234;
+    x.save();
+    x.beginPath();
+    if (x.roundRect) x.roundRect(px, py, pw, ph, 26);
+    else x.rect(px, py, pw, ph);
+    x.clip();
+    var iw = photo.naturalWidth, ih = photo.naturalHeight;
+    var scale = Math.max(pw / iw, ph / ih);
+    var dw = iw * scale, dh = ih * scale;
+    x.drawImage(photo, px + (pw - dw) / 2, py + (ph - dh) / 2, dw, dh);
+    x.restore();
+
+    x.strokeStyle = "rgba(138,180,255,0.4)";
+    x.lineWidth = 2;
+    x.beginPath();
+    if (x.roundRect) x.roundRect(px, py, pw, ph, 26);
+    else x.rect(px, py, pw, ph);
+    x.stroke();
+
+    x.fillStyle = "#cfd9ff";
+    x.font = "italic 48px Georgia, serif";
+    x.fillText("ты — свет", CW / 2, 1170);
+
+    x.fillStyle = "rgba(238,242,255,0.55)";
+    x.font = "22px system-ui, sans-serif";
+    x.fillText("сделано руками · для Марины", CW / 2, 1240);
+
+    var link = document.createElement("a");
+    link.href = c.toDataURL("image/png");
+    link.download = "ryzhik.png";
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
   });
 </script>
 </body>
