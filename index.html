@@ -1164,6 +1164,33 @@
 
   .cards-result.show { display: block; }
 
+  .send {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 12px;
+    padding: 13px 26px;
+    border-radius: 999px;
+    border: 1px solid rgba(138, 180, 255, 0.55);
+    background: rgba(138, 180, 255, 0.14);
+    color: #f4f7ff;
+    font-family: var(--sans);
+    font-size: 11px;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+
+  .send:hover { background: rgba(138, 180, 255, 0.24); }
+  .send:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+  .send-hint {
+    margin: 10px 0 0;
+    font-size: 11px;
+    line-height: 1.6;
+    color: rgba(238, 242, 255, 0.45);
+  }
+
   @media (min-width: 760px) {
     .cards { grid-template-columns: 1fr 1fr; }
     .qcard:last-child { grid-column: 1 / -1; }
@@ -1584,12 +1611,14 @@
 
       <div class="cards-foot">
         <button class="go" id="qgo" type="button" disabled>показать мою подборку</button>
-        <p class="note">Ответы остаются только у тебя — нажми кнопку, скопируй строку и отправь её мне. Больше никуда они не уходят.</p>
+        <p class="note">Ответы никуда не уходят сами. Нажми «показать мою подборку», потом «отправить мне» — откроется Телеграм или WhatsApp, выбери меня и отправь.</p>
       </div>
 
       <div class="cards-result" id="qres">
         <span id="qrestext"></span>
         <input id="qcopy" type="text" readonly aria-label="Строка с ответами">
+        <button class="send" id="qshare" type="button">отправить мне</button>
+        <p class="send-hint">Откроется окно «Поделиться» — выбери меня в Telegram или WhatsApp и отправь.</p>
       </div>
     </div>
   </section>
@@ -2075,6 +2104,26 @@
       if (card) card.classList.add("active");
     }
 
+    var FORM = {
+      action: "",
+      fields: ["entry.1111111111", "entry.2222222222", "entry.3333333333", "entry.4444444444", "entry.5555555555"]
+    };
+
+    function sendToForm(text) {
+      if (!FORM.action || !FORM.action.indexOf("docs.google.com/forms")) return Promise.resolve(false);
+      var body = new URLSearchParams();
+      body.append("fvv", "1");
+      body.append("pageHistory", "0");
+      FORM.fields.forEach(function (name, i) { body.append(name, answers[i] || ""); });
+      body.append("entry.0000000000", text);
+      return fetch(FORM.action, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: body.toString()
+      }).then(function () { return true; }).catch(function () { return false; });
+    }
+
     qgo.addEventListener("click", function () {
       var lines = cards.map(function (card, idx) {
         var q = card.querySelector(".qcard__q").textContent;
@@ -2089,8 +2138,25 @@
       if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(text).catch(function () {});
       }
+      sendToForm(text);
       showThanks();
     });
+
+    var qshare = document.getElementById("qshare");
+    if (qshare) {
+      qshare.addEventListener("click", function () {
+        var text = qcopy.value;
+        if (!text) return;
+        if (navigator.share) {
+          navigator.share({ title: "Мои ответы", text: text }).catch(function () {});
+          return;
+        }
+        window.open(
+          "https://t.me/share/url?url=" + encodeURIComponent(location.href) + "&text=" + encodeURIComponent(text),
+          "_blank"
+        );
+      });
+    }
 
     refresh();
   }
