@@ -6,6 +6,15 @@
 <title>Рыжик</title>
 <meta name="description" content="Фотографии, две глупости и звёздный дождь — для Марины.">
 <meta name="theme-color" content="#05060c">
+<link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCAzMiAzMic+PHJlY3Qgd2lkdGg9JzMyJyBoZWlnaHQ9JzMyJyByeD0nOCcgZmlsbD0nIzA1MDYwYycvPjxjaXJjbGUgY3g9JzE2JyBjeT0nMTYnIHI9JzknIGZpbGw9J25vbmUnIHN0cm9rZT0nIzhhYjRmZicgc3Ryb2tlLW9wYWNpdHk9Jy40NScvPjxjaXJjbGUgY3g9JzE2JyBjeT0nMTYnIHI9JzMnIGZpbGw9JyNjZmQ5ZmYnLz48L3N2Zz4=">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Рыжик">
+<meta property="og:description" content="Фотографии, две глупости и звёздный дождь. Только для тебя.">
+<meta property="og:url" content="https://mylove2005.github.io/svet/">
+<meta property="og:image" content="https://mylove2005.github.io/svet/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
 <style>
   *, *::before, *::after { box-sizing: border-box; }
 
@@ -37,12 +46,22 @@
     overflow-x: hidden;
   }
 
-  body::before {
-    content: "";
+  .stars {
     position: fixed;
-    inset: 0;
+    inset: -8%;
     z-index: 0;
     pointer-events: none;
+  }
+
+  .stars i {
+    position: absolute;
+    inset: 0;
+    display: block;
+    background-repeat: repeat;
+    will-change: transform;
+  }
+
+  .stars i:nth-child(1) {
     background-image:
       radial-gradient(1px 1px at 12px 24px, #ffffff, transparent),
       radial-gradient(1px 1px at 84px 148px, #cfe0ff, transparent),
@@ -53,8 +72,33 @@
       radial-gradient(1px 1px at 42px 304px, #d8e4ff, transparent),
       radial-gradient(1px 1px at 186px 330px, #ffffff, transparent);
     background-size: 360px 360px;
-    opacity: 0.55;
+    opacity: 0.52;
     animation: twinkle 9s ease-in-out infinite alternate;
+    transform: translate3d(calc(var(--sx, 0px) * 0.35), calc(var(--sy, 0px) * 0.35), 0);
+    transition: transform 0.45s ease-out;
+  }
+
+  .stars i:nth-child(2) {
+    background-image:
+      radial-gradient(1.5px 1.5px at 40px 90px, #ffffff, transparent),
+      radial-gradient(1px 1px at 210px 40px, #d8e4ff, transparent),
+      radial-gradient(2px 2px at 130px 250px, #ffffff, transparent),
+      radial-gradient(1px 1px at 300px 180px, #b9ccff, transparent);
+    background-size: 420px 420px;
+    opacity: 0.6;
+    transform: translate3d(calc(var(--sx, 0px) * 0.75), calc(var(--sy, 0px) * 0.75), 0);
+    transition: transform 0.5s ease-out;
+  }
+
+  .stars i:nth-child(3) {
+    background-image:
+      radial-gradient(2px 2px at 60px 140px, #eef2ff, transparent),
+      radial-gradient(2.5px 2.5px at 260px 70px, #cfd9ff, transparent),
+      radial-gradient(1.5px 1.5px at 180px 300px, #ffffff, transparent);
+    background-size: 520px 520px;
+    opacity: 0.7;
+    transform: translate3d(calc(var(--sx, 0px) * 1.25), calc(var(--sy, 0px) * 1.25), 0);
+    transition: transform 0.55s ease-out;
   }
 
   @keyframes twinkle {
@@ -163,6 +207,9 @@
     letter-spacing: -0.015em;
     color: #f4f7ff;
     text-shadow: 0 0 70px rgba(138, 180, 255, 0.35);
+    -webkit-user-select: none;
+    user-select: none;
+    touch-action: manipulation;
   }
 
   .hero h1::after {
@@ -181,6 +228,25 @@
     line-height: 1.75;
     color: var(--muted);
     text-wrap: balance;
+  }
+
+  .egg {
+    margin: 0;
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: clamp(15px, 1.6vw, 19px);
+    line-height: 1.6;
+    color: #cfd9ff;
+    transition: opacity 0.6s ease, max-height 0.6s ease, margin 0.6s ease;
+  }
+
+  .hero.egg-open .egg {
+    max-height: 240px;
+    opacity: 1;
+    margin-top: 24px;
   }
 
   .cue {
@@ -657,6 +723,7 @@
 <body>
 <div class="progress" id="progress"></div>
 <div class="light" id="light"></div>
+<div class="stars" aria-hidden="true"><i></i><i></i><i></i></div>
 <canvas id="fw" aria-hidden="true"></canvas>
 <div class="grain"></div>
 <button class="sound" id="sound" type="button" aria-pressed="false">музыка<span class="sound__dot" aria-hidden="true"></span></button>
@@ -667,6 +734,7 @@
     <p class="kicker enter d1">Марина · где-то рядом</p>
     <h1 class="enter d2">Рыжик</h1>
     <p class="sub enter d3">Фотографии, две глупости и звёздный дождь. Только для тебя.</p>
+    <p class="egg" id="egg" aria-hidden="true">Секрет найден. Ты и правда не удержишься. Ты — лучший человек из всех, кого я знаю.</p>
     <div class="cue enter d4" aria-hidden="true"><i></i>листай</div>
   </header>
 
@@ -801,9 +869,16 @@
   onScroll();
 
   var light = document.getElementById("light");
+  var root = document.documentElement;
+  var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   window.addEventListener("pointermove", function (e) {
     light.style.setProperty("--mx", e.clientX + "px");
     light.style.setProperty("--my", e.clientY + "px");
+    if (reduceMotion) return;
+    var nx = (e.clientX / window.innerWidth - 0.5) * 2;
+    var ny = (e.clientY / window.innerHeight - 0.5) * 2;
+    root.style.setProperty("--sx", (nx * 9).toFixed(2) + "px");
+    root.style.setProperty("--sy", (ny * 9).toFixed(2) + "px");
   }, { passive: true });
 
   if ("IntersectionObserver" in window) {
@@ -890,6 +965,24 @@
       });
     }
   }
+
+  var hero = document.querySelector(".hero");
+  var egg = document.getElementById("egg");
+  var heroTitle = document.querySelector(".hero h1");
+  var taps = 0, tapTimer = null;
+
+  heroTitle.addEventListener("click", function () {
+    taps++;
+    window.clearTimeout(tapTimer);
+    tapTimer = window.setTimeout(function () { taps = 0; }, 2500);
+    if (taps === 5) {
+      taps = 0;
+      hero.classList.add("egg-open");
+      egg.setAttribute("aria-hidden", "false");
+      var box = heroTitle.getBoundingClientRect();
+      sparkle(box.left + box.width / 2, box.top + box.height / 2);
+    }
+  });
 
   function tick(t) {
     if (!running) return;
