@@ -900,6 +900,8 @@
     position: relative;
     height: 2px;
     min-height: 2px;
+    justify-self: stretch;
+    min-width: 0;
     background-image: linear-gradient(90deg, rgba(138, 180, 255, 0.6) 50%, transparent 50%);
     background-size: 12px 2px;
     background-repeat: repeat-x;
@@ -927,18 +929,42 @@
     height: 14px;
     fill: #cfe0ff;
     filter: drop-shadow(0 0 6px rgba(138, 180, 255, 0.85));
-    animation: fly 7s linear infinite;
+    will-change: transform;
   }
 
-  @keyframes fly {
-    0% { left: 0; opacity: 0; }
-    10% { opacity: 1; }
-    90% { opacity: 1; }
-    100% { left: 100%; opacity: 0; }
+  .fly {
+    margin: 34px auto 0;
+    display: grid;
+    justify-items: center;
+    gap: 12px;
+    max-width: 36ch;
+    text-align: center;
   }
 
-  @media (prefers-reduced-motion: reduce) {
-    .map__plane { animation: none; left: 50%; }
+  .fly__btn {
+    padding: 13px 26px;
+    border-radius: 999px;
+    border: 1px solid rgba(138, 180, 255, 0.4);
+    background: rgba(12, 18, 36, 0.7);
+    color: #eaf0ff;
+    font: inherit;
+    font-size: 12px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
+  }
+
+  .fly__btn:hover { background: rgba(30, 44, 86, 0.8); border-color: rgba(138, 180, 255, 0.7); }
+  .fly__btn:active { transform: scale(0.98); }
+  .fly__btn[disabled] { opacity: 0.45; cursor: default; }
+
+  .fly__hint {
+    margin: 0;
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--muted);
+    text-wrap: balance;
   }
 
   @media (min-width: 760px) {
@@ -1900,6 +1926,10 @@
           </div>
         </div>
       </div>
+      <div class="fly">
+        <button class="fly__btn" id="flyBtn" type="button">отправить самолётик</button>
+        <p class="fly__hint" id="flyHint">Нажми — он полетит к тебе и вернётся обратно.</p>
+      </div>
     </div>
   </section>
 
@@ -2132,6 +2162,60 @@
     window.clearTimeout(wordTimer);
     wordTimer = window.setTimeout(function () { wordToast.classList.remove("show"); }, 4200);
   });
+
+  var flyBtn = document.getElementById("flyBtn");
+  var planeEl = document.querySelector(".map__plane");
+  var flyLine = document.querySelector(".map__line");
+  var flyHint = document.getElementById("flyHint");
+
+  if (flyBtn && planeEl && flyLine) {
+    var travel = 0;
+    var flying = false;
+
+    var setPlane = function (x, back) {
+      planeEl.style.transform = "translateX(" + x + "px)" + (back ? " scaleX(-1)" : "");
+    };
+
+    var animatePlane = function (from, to, ms, back, done) {
+      if (reduceMotion) {
+        setPlane(to, back);
+        done();
+        return;
+      }
+      var start = null;
+      var step = function (ts) {
+        if (start === null) start = ts;
+        var p = Math.min((ts - start) / ms, 1);
+        var e = p < 0.5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2;
+        setPlane(from + (to - from) * e, back);
+        if (p < 1) requestAnimationFrame(step);
+        else done();
+      };
+      requestAnimationFrame(step);
+    };
+
+    flyBtn.addEventListener("click", function () {
+      if (flying) return;
+      flying = true;
+      travel = Math.max(flyLine.clientWidth - 14, 0);
+      flyBtn.disabled = true;
+      flyHint.textContent = "Летит. Смотри на линию.";
+      var startBox = flyLine.getBoundingClientRect();
+      sparkle(startBox.left + 6, startBox.top);
+      animatePlane(0, travel, 2600, false, function () {
+        var endBox = flyLine.getBoundingClientRect();
+        sparkle(endBox.right - 6, endBox.top);
+        flyHint.textContent = "Долетел. Возвращается.";
+        window.setTimeout(function () {
+          animatePlane(travel, 0, 2600, true, function () {
+            flying = false;
+            flyBtn.disabled = false;
+            flyHint.textContent = "Туда и обратно. 1 200 км — не расстояние.";
+          });
+        }, 700);
+      });
+    });
+  }
 
   function tick(t) {
     if (!running) return;
