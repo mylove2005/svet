@@ -149,6 +149,29 @@
 
   #fw.on { opacity: 1; }
 
+  .show-title {
+    position: fixed;
+    left: 50%;
+    top: 48%;
+    margin: 0;
+    z-index: 16;
+    transform: translate(-50%, -50%) scale(0.94);
+    font-family: var(--serif);
+    font-style: italic;
+    font-weight: 400;
+    font-size: clamp(30px, 7.4vw, 116px);
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+    white-space: nowrap;
+    color: #f8faff;
+    text-shadow: 0 0 34px rgba(138, 180, 255, 0.55), 0 0 120px rgba(201, 160, 255, 0.35);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 1s ease, transform 1.6s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+
+  .show-title.on { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+
   main { position: relative; z-index: 2; }
   section.night { position: relative; z-index: 2; }
 
@@ -1668,6 +1691,7 @@
 <div class="light" id="light"></div>
 <div class="stars" aria-hidden="true"><i></i><i></i><i></i></div>
 <canvas id="fw" aria-hidden="true"></canvas>
+<p class="show-title" id="showTitle" aria-hidden="true">Рыжик-бесстыжик</p>
 <div class="grain"></div>
 <div class="garland" aria-hidden="true">
   <svg class="garland__wire" viewBox="0 0 1200 100" preserveAspectRatio="none"><path d="M0,14 Q300,74 600,32 T1200,14" /></svg>
@@ -2293,13 +2317,22 @@
   }
 
   function startShow() {
-    if (running || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    running = true;
-    last = 0;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (!running) {
+      running = true;
+      last = 0;
+      requestAnimationFrame(tick);
+    }
     parts = [];
     rockets = [];
     flashes = [];
     canvas.classList.add("on");
+    var titleEl = document.getElementById("showTitle");
+    if (titleEl) {
+      titleEl.classList.add("on");
+      window.clearTimeout(titleEl._t);
+      titleEl._t = window.setTimeout(function () { titleEl.classList.remove("on"); }, 6500);
+    }
     var shots = 0;
     (function schedule() {
       if (shots > 14) return;
@@ -2308,7 +2341,6 @@
       if (shots < 3) launch();
       window.setTimeout(schedule, rand(170, 400));
     })();
-    requestAnimationFrame(tick);
   }
 
   document.querySelectorAll(".env").forEach(function (btn) {
