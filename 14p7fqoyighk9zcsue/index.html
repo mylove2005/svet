@@ -1234,6 +1234,79 @@
     color: rgba(238, 242, 255, 0.4);
   }
 
+  .atlas {
+    max-width: 620px;
+    margin: 40px auto 0;
+    padding: clamp(22px, 3.4vw, 34px);
+    border-radius: 18px;
+    border: 1px solid rgba(138, 180, 255, 0.16);
+    background: rgba(9, 13, 24, 0.66);
+    box-shadow: 0 0 70px -30px rgba(138, 180, 255, 0.6);
+    text-align: left;
+  }
+
+  .atlas__title {
+    margin: 0 0 14px;
+    font-size: 10px;
+    letter-spacing: 0.34em;
+    text-transform: uppercase;
+    color: rgba(238, 242, 255, 0.44);
+  }
+
+  .atlas p {
+    margin: 0;
+    font-size: clamp(14px, 1.5vw, 16px);
+    line-height: 1.85;
+    color: rgba(238, 242, 255, 0.78);
+    text-wrap: pretty;
+  }
+
+  .const__name {
+    display: block;
+    margin-top: 8px;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(138, 180, 255, 0.75);
+  }
+
+  .const__name:empty { display: none; }
+
+  .breath {
+    position: relative;
+    min-height: 78vh;
+    display: grid;
+    place-items: center;
+    padding: clamp(60px, 12vh, 140px) 24px;
+    text-align: center;
+  }
+
+  .breath__line {
+    margin: 0;
+    opacity: 0;
+    font-size: 11px;
+    letter-spacing: 0.34em;
+    text-transform: uppercase;
+    color: rgba(238, 242, 255, 0.4);
+    transition: opacity 2s ease;
+  }
+
+  .breath__line.on { opacity: 1; }
+
+  .breath__final {
+    max-width: 34ch;
+    margin: 26px auto 0;
+    opacity: 0;
+    font-family: var(--serif);
+    font-size: clamp(20px, 2.6vw, 30px);
+    line-height: 1.4;
+    color: #eaf0ff;
+    text-wrap: balance;
+    transition: opacity 1.8s ease;
+  }
+
+  .breath__final.on { opacity: 1; }
+
   .letter.typewriter p { visibility: hidden; }
   .letter.typewriter p.printing,
   .letter.typewriter p.typed { visibility: visible; }
@@ -1706,6 +1779,14 @@
 
   .const__done.show { opacity: 1; }
 
+  .const__note {
+    margin: 22px auto 0;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(238, 242, 255, 0.32);
+  }
+
   .quote {
     max-width: 760px;
     margin: 0 auto;
@@ -1960,13 +2041,15 @@
     </div>
     <div class="const reveal">
       <div class="const__row" role="group" aria-label="Пять звёзд">
-        <button class="star" type="button" aria-label="Звезда 1" aria-pressed="false" data-text="За то, что с тобой можно молчать и это не неловко."><span class="star__shape" aria-hidden="true"></span></button>
-        <button class="star" type="button" aria-label="Звезда 2" aria-pressed="false" data-text="За то, что ты появляешься ровно тогда, когда нужно — даже из другого города."><span class="star__shape" aria-hidden="true"></span></button>
-        <button class="star" type="button" aria-label="Звезда 3" aria-pressed="false" data-text="За смех, который слышно даже через телефон."><span class="star__shape" aria-hidden="true"></span></button>
-        <button class="star" type="button" aria-label="Звезда 4" aria-pressed="false" data-text="За честность, даже когда её не просили."><span class="star__shape" aria-hidden="true"></span></button>
-        <button class="star" type="button" aria-label="Звезда 5" aria-pressed="false" data-text="За то, что расстояние не делает тебя дальше."><span class="star__shape" aria-hidden="true"></span></button>
+        <button class="star" type="button" aria-label="Звезда 1" aria-pressed="false" data-star="Вега" data-text="За то, что с тобой можно молчать и это не неловко."><span class="star__shape" aria-hidden="true"></span></button>
+        <button class="star" type="button" aria-label="Звезда 2" aria-pressed="false" data-star="Денеб" data-text="За то, что ты появляешься ровно тогда, когда нужно — даже из другого города."><span class="star__shape" aria-hidden="true"></span></button>
+        <button class="star" type="button" aria-label="Звезда 3" aria-pressed="false" data-star="Альтаир" data-text="За смех, который слышно даже через телефон."><span class="star__shape" aria-hidden="true"></span></button>
+        <button class="star" type="button" aria-label="Звезда 4" aria-pressed="false" data-star="Антарес" data-text="За честность, даже когда её не просили."><span class="star__shape" aria-hidden="true"></span></button>
+        <button class="star" type="button" aria-label="Звезда 5" aria-pressed="false" data-star="Арктур" data-text="За то, что расстояние не делает тебя дальше."><span class="star__shape" aria-hidden="true"></span></button>
       </div>
       <p class="const__text" id="constText" aria-live="polite"></p>
+      <p class="const__name" id="constName" aria-live="polite"></p>
+      <p class="const__note">Эти звёзды тоже были там, в ту ночь.</p>
       <p class="const__done" id="constDone">Созвездие собрано. Теперь можно зажигать звёзды.</p>
     </div>
   </section>
@@ -2129,7 +2212,9 @@
         <span id="qrestext"></span>
         <input id="qcopy" type="text" readonly aria-label="Строка с ответами">
         <button class="send" id="qshare" type="button">отправить мне</button>
+        <button class="send" id="qsave" type="button">Забрать ответы</button>
         <p class="send-hint">Откроется окно «Поделиться» — выбери меня в Telegram или WhatsApp и отправь.</p>
+        <p class="send-hint" id="qsaveHint" role="status" hidden>Сначала напиши хоть что-нибудь 🙂</p>
       </div>
     </div>
   </section>
@@ -2282,14 +2367,25 @@
         </svg>
       </div>
       <p class="sky__note">Север сверху, всё небо целиком. Схема приблизительная: только яркие звёзды, без поправки на атмосферу.</p>
+      <aside class="atlas">
+        <p class="atlas__title">заметка на полях</p>
+        <p>В ту ночь Марс был ближе к Земле, чем за 60 тысяч лет до неё — и чем за сотни лет после. 27–28 августа 2003 года Марс подошёл на рекордно близкое расстояние за всю историю наблюдений — около 55,8 млн км. Небо над Ишимбаем 28.08.2003 — одно из самых особых за всю человеческую память.</p>
+      </aside>
     </div>
   </section>
   <hr class="rule">
 
+  <section class="breath" id="breath">
+    <div>
+      <p class="breath__line" id="breathLine">Прокрути ещё немного…</p>
+      <p class="breath__final" id="breathFinal">Всё, что я хотел сказать, уже сказано. Осталось только небо и ты в нём.</p>
+    </div>
+  </section>
+
   <section class="plain">
     <div class="ny reveal">
       <p class="kicker">и ещё одно</p>
-      <h2>С наступающим, Рыжик</h2>
+      <h2><span id="nyTitle">С наступающим</span>, Рыжик</h2>
       <p>Пусть следующий год будет к тебе добрее, чем этот. И пусть в нём будет больше поводов смеяться, чем поводов уставать.</p>
     </div>
   </section>
@@ -2726,6 +2822,35 @@
     window.setInterval(paintClocks, 20000);
   }
 
+  var breath = document.getElementById("breath");
+  var breathLine = document.getElementById("breathLine");
+  var breathFinal = document.getElementById("breathFinal");
+  if (breath && breathLine) {
+    if (!("IntersectionObserver" in window)) {
+      breathLine.classList.add("on");
+      if (breathFinal) breathFinal.classList.add("on");
+    } else {
+      breathLine.classList.add("on");
+      var breathIO = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+          breathIO.disconnect();
+          window.setTimeout(function () {
+            if (breathFinal) breathFinal.classList.add("on");
+          }, 2400);
+        });
+      }, { threshold: 0.45 });
+      breathIO.observe(breath);
+    }
+  }
+
+  var nyTitle = document.getElementById("nyTitle");
+  if (nyTitle) {
+    var now = new Date();
+    var after = now.getMonth() > 0 || now.getDate() > 14;
+    nyTitle.textContent = after ? "С наступившим" : "С наступающим";
+  }
+
   var mirrorVideo = document.getElementById("mirrorVideo");
   var mirrorOn = document.getElementById("mirrorOn");
   var mirrorOff = document.getElementById("mirrorOff");
@@ -2908,10 +3033,11 @@
   var starBtns = document.querySelectorAll(".star");
   var constText = document.getElementById("constText");
   var constDone = document.getElementById("constDone");
+  var constName = document.getElementById("constName");
   var litStars = 0;
 
   starBtns.forEach(function (star) {
-    star.addEventListener("click", function () {
+    var showStar = function () {
       if (!star.classList.contains("lit")) {
         star.classList.add("lit");
         litStars++;
@@ -2919,10 +3045,16 @@
       star.setAttribute("aria-pressed", "true");
       constText.textContent = star.getAttribute("data-text");
       constText.classList.add("show");
+      if (constName) constName.textContent = star.getAttribute("data-star") || "";
       if (litStars === starBtns.length) {
         constDone.classList.add("show");
         openBtn.classList.add("ready");
       }
+    };
+    star.addEventListener("click", showStar);
+    star.addEventListener("mouseenter", function () {
+      var name = star.getAttribute("data-star");
+      if (constName && name) constName.textContent = name;
     });
   });
 
@@ -3103,6 +3235,38 @@
     });
 
     var qshare = document.getElementById("qshare");
+    var qsave = document.getElementById("qsave");
+    var qsaveHint = document.getElementById("qsaveHint");
+    if (qsave) {
+      qsave.addEventListener("click", function () {
+        var filled = answers.some(function (a) { return (a || "").trim() !== ""; });
+        if (!filled) {
+          if (qsaveHint) {
+            qsaveHint.hidden = false;
+            window.clearTimeout(qsaveHint._t);
+            qsaveHint._t = window.setTimeout(function () { qsaveHint.hidden = true; }, 4200);
+          }
+          return;
+        }
+        var out = ["Ответы для Рыжика-бесстыжика", ""];
+        cards.forEach(function (card, idx) {
+          var q = card.querySelector(".qcard__q").textContent.trim();
+          out.push(q);
+          out.push("— " + ((answers[idx] || "").trim() || "—"));
+          out.push("");
+        });
+        var blob = new Blob([out.join("\n").trimEnd() + "\n"], { type: "text/plain;charset=utf-8" });
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement("a");
+        a.href = url;
+        a.download = "dlya-tebya.txt";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        window.setTimeout(function () { URL.revokeObjectURL(url); }, 4000);
+        if (qsaveHint) qsaveHint.hidden = true;
+      });
+    }
     if (qshare) {
       qshare.addEventListener("click", function () {
         var text = qcopy.value;
