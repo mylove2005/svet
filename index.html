@@ -261,6 +261,76 @@
     backdrop-filter: blur(8px);
   }
 
+  .countdown {
+    margin: 34px 0 0;
+    display: grid;
+    justify-items: center;
+    gap: 12px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .countdown__label {
+    margin: 0;
+    font-size: 9px;
+    letter-spacing: 0.34em;
+    text-transform: uppercase;
+    color: rgba(238, 242, 255, 0.34);
+  }
+
+  .countdown__row {
+    display: flex;
+    align-items: baseline;
+    gap: clamp(8px, 1.6vw, 16px);
+  }
+
+  .countdown__cell { display: grid; justify-items: center; gap: 4px; min-width: 46px; }
+
+  .countdown__num {
+    font-family: var(--serif);
+    font-size: clamp(22px, 3vw, 36px);
+    line-height: 1;
+    color: #f2f6ff;
+    text-shadow: 0 0 26px rgba(138, 180, 255, 0.4);
+  }
+
+  .countdown__cap {
+    font-size: 8px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: rgba(238, 242, 255, 0.32);
+  }
+
+  .countdown__sep {
+    font-family: var(--serif);
+    font-size: clamp(18px, 2.4vw, 28px);
+    line-height: 1;
+    color: rgba(138, 180, 255, 0.45);
+  }
+
+  .countdown__done .countdown__row { display: none; }
+  .countdown__done .countdown__label::after { content: " — с новым годом"; }
+
+  .word-toast {
+    position: fixed;
+    left: 50%;
+    bottom: 28px;
+    transform: translate(-50%, 20px);
+    z-index: 90;
+    padding: 12px 20px;
+    border-radius: 999px;
+    background: rgba(12, 16, 32, 0.9);
+    border: 1px solid rgba(138, 180, 255, 0.28);
+    color: #eaf0ff;
+    font-size: 13px;
+    letter-spacing: 0.04em;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s ease, transform 0.5s ease;
+    backdrop-filter: blur(10px);
+  }
+
+  .word-toast.show { opacity: 1; transform: translate(-50%, 0); }
+
   .cue {
     position: absolute;
     bottom: 34px;
@@ -847,6 +917,28 @@
     text-transform: uppercase;
     color: rgba(238, 242, 255, 0.42);
     white-space: nowrap;
+  }
+
+  .map__plane {
+    position: absolute;
+    top: -7px;
+    left: 0;
+    width: 14px;
+    height: 14px;
+    fill: #cfe0ff;
+    filter: drop-shadow(0 0 6px rgba(138, 180, 255, 0.85));
+    animation: fly 7s linear infinite;
+  }
+
+  @keyframes fly {
+    0% { left: 0; opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { left: 100%; opacity: 0; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .map__plane { animation: none; left: 50%; }
   }
 
   @media (min-width: 760px) {
@@ -1566,6 +1658,7 @@
   <i style="left:92%;top:30px"></i>
 </div>
 <button class="sound" id="sound" type="button" aria-pressed="false">музыка<span class="sound__dot" aria-hidden="true"></span></button>
+<div class="word-toast" id="wordToast" role="status">Рыжик — это ты. Салют в твою честь.</div>
 
 <main>
   <header class="hero">
@@ -1575,6 +1668,18 @@
     <h1 class="enter d2">Рыжик</h1>
     <p class="sub enter d3">Фотографии, две глупости и звёздный дождь. Только для тебя.</p>
     <div class="distance enter d3" aria-hidden="true"><i></i><span></span><i></i></div>
+    <div class="countdown enter d4" id="countdown">
+      <p class="countdown__label">до нового года</p>
+      <div class="countdown__row">
+        <div class="countdown__cell"><span class="countdown__num" data-cd="d">—</span><span class="countdown__cap">дней</span></div>
+        <span class="countdown__sep" aria-hidden="true">:</span>
+        <div class="countdown__cell"><span class="countdown__num" data-cd="h">—</span><span class="countdown__cap">часов</span></div>
+        <span class="countdown__sep" aria-hidden="true">:</span>
+        <div class="countdown__cell"><span class="countdown__num" data-cd="m">—</span><span class="countdown__cap">минут</span></div>
+        <span class="countdown__sep" aria-hidden="true">:</span>
+        <div class="countdown__cell"><span class="countdown__num" data-cd="s">—</span><span class="countdown__cap">секунд</span></div>
+      </div>
+    </div>
     <p class="egg" id="egg" aria-hidden="true">Секрет найден. Ты и правда не удержишься. Ты — лучший человек из всех, кого я знаю.</p>
     <div class="cue enter d4" aria-hidden="true"><i></i>листай</div>
   </header>
@@ -1787,7 +1892,7 @@
             <p class="map__city">Электросталь</p>
             <p class="map__region">Московская область</p>
           </div>
-          <div class="map__line" aria-hidden="true"><span>≈ 1 200 км</span></div>
+          <div class="map__line" aria-hidden="true"><span>≈ 1 200 км</span><svg class="map__plane" viewBox="0 0 24 24"><path d="M2 12l20-8-6 20-3-8-11-4z" /></svg></div>
           <div class="map__point">
             <span class="map__dot" aria-hidden="true"></span>
             <p class="map__city">Ишимбай</p>
@@ -1979,6 +2084,53 @@
       var box = heroTitle.getBoundingClientRect();
       sparkle(box.left + box.width / 2, box.top + box.height / 2);
     }
+  });
+
+  var cd = document.getElementById("countdown");
+  if (cd) {
+    var cdTarget = new Date("2027-01-01T00:00:00+05:00").getTime();
+    var cdD = cd.querySelector('[data-cd="d"]');
+    var cdH = cd.querySelector('[data-cd="h"]');
+    var cdM = cd.querySelector('[data-cd="m"]');
+    var cdS = cd.querySelector('[data-cd="s"]');
+    var two = function (n) { return (n < 10 ? "0" : "") + n; };
+    var cdTick = function () {
+      var left = cdTarget - Date.now();
+      if (left <= 0) {
+        cdD.textContent = cdH.textContent = cdM.textContent = cdS.textContent = "00";
+        cd.classList.add("countdown__done");
+        return;
+      }
+      var sec = Math.floor(left / 1000);
+      cdD.textContent = Math.floor(sec / 86400);
+      cdH.textContent = two(Math.floor(sec % 86400 / 3600));
+      cdM.textContent = two(Math.floor(sec % 3600 / 60));
+      cdS.textContent = two(sec % 60);
+      window.setTimeout(cdTick, 1000);
+    };
+    cdTick();
+  }
+
+  document.addEventListener("pointerdown", function (e) {
+    if (reduceMotion) return;
+    if (e.target.closest(".sound, .env, .map__plane")) return;
+    sparkle(e.clientX, e.clientY);
+  }, { passive: true });
+
+  var wordToast = document.getElementById("wordToast");
+  var wordBuf = "";
+  var WORD = "рыжик";
+  var wordTimer = null;
+  window.addEventListener("keydown", function (e) {
+    if (e.key.length !== 1) return;
+    wordBuf = (wordBuf + e.key.toLowerCase()).slice(-WORD.length);
+    if (wordBuf !== WORD) return;
+    wordBuf = "";
+    startShow();
+    if (!wordToast) return;
+    wordToast.classList.add("show");
+    window.clearTimeout(wordTimer);
+    wordTimer = window.setTimeout(function () { wordToast.classList.remove("show"); }, 4200);
   });
 
   function tick(t) {
